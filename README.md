@@ -4,34 +4,49 @@
 
 功能齐全，词库体验良好，长期更新修订。
 
+<br>
+
+[RIME | 中州韵输入法引擎](https://rime.im/) 是一个跨平台的输入法算法框架，这里是 Rime 的一个配置仓库。
+
+用户需要[下载各平台对应的 Rime 发行版](https://rime.im/download/)，并将此配置应用到配置目录。
+
+详细介绍：[Rime 配置：雾凇拼音](https://dvel.me/posts/rime-ice/)
+
+[常见问题](https://github.com/iDvel/rime-ice/issues/133)
+
+[更新日志](./others/CHANGELOG.md)
+
+<br>
+
 ## 基本套路
 
 - 简体 | 全拼 | 双拼
 - 主要功能
     -   [melt_eng](https://github.com/tumuyan/rime-melt) 英文输入
+    -   [优化英文输入体验](https://dvel.me/posts/make-rime-en-better/)
     -   [两分输入法](http://cheonhyeong.com/Simplified/download.html) 拼字
-    -   简繁切换
-    -   日期、时间、星期
     -   自整理的 Emoji
     -   [以词定字](https://github.com/BlindingDark/rime-lua-select-character)
     -   [长词优先](https://github.com/tumuyan/rime-melt/blob/master/lua/melt.lua)
     -   [Unicode](https://github.com/shewer/librime-lua-script/blob/main/lua/component/unicode.lua)
-    -   所有标点符号直接上屏，「/」模式改为「v」模式，「/」直接上屏
+    -   [数字、人民币大写](https://wb98.gitee.io/)
+    -   日期、时间、星期
+    -   常见错音错字提示
+    -   所有标点符号直接上屏，/ 模式改为 v 模式，/ 直接上屏
     -   增加了许多拼音纠错
 - 简体字表、词库
-    -   [《通用规范汉字表》的 8105 字字表](https://github.com/iDvel/The-Table-of-General-Standard-Chinese-Characters)
+    -   [《通用规范汉字表》](https://github.com/iDvel/The-Table-of-General-Standard-Chinese-Characters)
     -   [华宇野风系统词库](http://bbs.pinyin.thunisoft.com/forum.php?mod=viewthread&tid=30049)
     -   [清华大学开源词库](https://github.com/thunlp/THUOCL)
     -   [《现代汉语常用词表》](https://gist.github.com/indiejoseph/eae09c673460aa0b56db)
     -   [《现代汉语词典》](https://forum.freemdict.com/t/topic/12102)
     -   [《同义词词林》](https://forum.freemdict.com/t/topic/1211)
     -   [《新华成语大词典》](https://forum.freemdict.com/t/topic/11407)
-    -   [搜狗网络流行新词](https://pinyin.sogou.com/dict/detail/index/4)
     -   [腾讯词向量](https://ai.tencent.com/ailab/nlp/en/download.html)
 - 词库修订
     - 校对大量异形词、错别字、错误注音
-
-详细介绍：[雾凇拼音，我的 Rime 配置及新手指引](https://dvel.me/posts/my-rime/)
+    - 全词库完成注音
+    - 同义多音字注音
 
 <br>
 
@@ -43,7 +58,6 @@
 
 - `8105` 字表。
 - `base` 基础词库。
-- `sogou` 搜狗流行词。
 - `ext` 扩展词库，小词库。
 - `tencent` 扩展词库，大词库。
 - Emoji
@@ -56,91 +70,116 @@
 
 ## 使用说明
 
-备份后删除配置目录下原有的配置文件，再将仓库所有文件复制粘贴进去就好了。
+⚠️ 单独使用词库注意事项：`rime_ice.dict.yaml` 下面包含了大写字母，这和配置有些许绑定，可以直接删除，详细说明：[#356](https://github.com/iDvel/rime-ice/issues/356)
 
-配置目录：
+雾凇拼音提供了一整套开箱即用的完整配置，包括了多个输入方案、词库及其他功能扩展。其中多个文件可能与其他方案同名冲突，如果是新手想一键安装，建议备份原先配置，清空配置目录再导入。
 
-- 鼠须管： `~/Library/Rime`
-- 小狼毫： `%APPDATA%\Rime`
+配置目录为小狼毫的 `%APPDATA%\Rime`，鼠须管的 `~/Library/Rime`，可通过右键菜单栏图标打开。
 
-更新词库：
+### 手动安装
 
-词库每个月都会更新几次，更新时只需要将下面 3 个文件夹覆盖过去并重新部署即可。
+将仓库所有文件复制粘贴到配置目录，重新部署。
 
-- `cn_dicts` 拼音相关词库
-- `en_dicts` 英文相关词库
-- `opencc` Emoji
+更新词库，手动覆盖 `cn_dicts` `en_dcits` `opencc` 三个文件夹。
+
+### 东风破 [plum](https://github.com/rime/plum)
+
+所有配方（`others/recipes/*.recipe.yaml`）只是简单地更新覆盖文件，适合更新词库时使用。后四个配方只是更新词库文件，并不更新 `rime_ice.dict.yaml` 和 `melt_eng.dict.yaml`，因为用户可能会挂载其他词库。如果更新后部署时报错，可能是增、删、改了文件名，需要检查上面两个文件和词库的对应关系。
+
+安装或更新：全部文件
+
+```
+bash rime-install iDvel/rime-ice:others/recipes/full
+```
+
+安装或更新：所有词库文件（包含下面三个）
+
+```
+bash rime-install iDvel/rime-ice:others/recipes/all_dicts
+```
+
+安装或更新：拼音词库文件
+
+```
+bash rime-install iDvel/rime-ice:others/recipes/cn_dicts
+```
+
+安装或更新：英文词库文件
+
+```
+bash rime-install iDvel/rime-ice:others/recipes/en_dicts
+```
+
+安装或更新：opencc(emoji)
+
+```
+bash rime-install iDvel/rime-ice:others/recipes/opencc
+```
+
+### 仓输入法 [Hamster](https://github.com/imfuxiao/Hamster)
+
+参考 [如何导入"雾淞拼音输入方案"](https://github.com/imfuxiao/Hamster/wiki/%E5%A6%82%E4%BD%95%E5%AF%BC%E5%85%A5%22%E9%9B%BE%E6%B7%9E%E6%8B%BC%E9%9F%B3%E8%BE%93%E5%85%A5%E6%96%B9%E6%A1%88%22)
+
+### 自动部署脚本
+
+[Mark24Code/rime-auto-deploy](https://github.com/Mark24Code/rime-auto-deploy) 一个自动部署脚本，集成了雾凇拼音，帮助无痛快速安装、部署 Rime 输入法（中州韵、小狼毫，鼠须管）以及部署配置。
+
+### Arch Linux
+
+使用 AUR helper 安装 [rime-ice-git](https://aur.archlinux.org/packages/rime-ice-git) 包即可。
+
+```bash
+# paru 默认会每次重新评估 pkgver，所以有新的提交时 paru 会自动更新，
+# yay 默认未开启此功能，可以通过此命令开启
+# yay -Y --devel --save
+
+paru -S rime-ice-git
+# yay -S rime-ice-git
+```
+
+推荐使用[补丁](https://github.com/rime/home/wiki/Configuration#補靪)的方式启用。
+
+参考下面的配置示例，修改对应输入法框架用户目录（见下）中的 `default.custom.yaml` 文件
+
+- iBus 为 `$HOME/.config/ibus/rime/`
+- Fcitx5 为 `$HOME/.local/share/fcitx5/rime/`
+
+<details>
+<summary>default.custom.yaml</summary>
+
+```yaml
+patch:
+  # 仅使用「雾凇拼音」的默认配置，配置此行即可
+  __include: rime_ice_suggestion:/
+  # 以下根据自己所需自行定义，仅做参考。
+  # 针对对应处方的定制条目，请使用 <recipe>.custom.yaml 中配置，例如 rime_ice.custom.yaml
+  __patch:
+    key_binder/+:
+      select_first_character: "bracketleft" # 即 [
+      select_last_character: "bracketright" # 即 ]
+```
+
+</details>
 
 <br>
 
-## 简单指引
+## 感谢 ❤️
 
-### 格式
+感谢上述提到的词库、方案及功能参考。
 
-在修改配置或词库前，请注意 Rime 对格式的要求：UTF-8 编码，严格遵循缩进，在配置文件中以空格缩进。
+感谢 [@Huandeep](https://github.com/Huandeep) 整理的多个词库。
 
-但是词条之间是用 Tab 分割的：
+感谢 [@Mirtle](https://github.com/mirtlecn) 完善的多个功能。
 
-```
-拼音	pin yin 1234
-拼音<Tab>pin<Space>yin<Tab>1234
-```
-
-### 主要的配置文件
-
-- `default.custom.yaml` 一些全局设置。
-- `xxx.schema.yaml` 方案配置，大部分功能的引用和实现。
-
-部署成功后，建议查阅一遍，按照自己的偏好进行修改，基本都写了注释。
-
-### 常用修改示例
-
-##### 呼出方案选单
-
-`default.custom.yaml` 中修改，默认为 Control+Shift+grave（grave 是 `` ` `` 反引号，Tab 上面那个）。
-
-##### Shift 切换中英
-
-`default.custom.yaml` 中修改 `Shift_L` 对应的选项，将 `noop` 修改为 `commit_code` 、`commit_text` 或 `clear`。
-
-##### 逗号句号翻页
-
-1. 在 `default.custom.yaml` 中解开句号逗号翻页的注释。
-2. 在 `rime_ice.schema.yaml` 中注释掉 `url_2`。（因为这个选项会覆盖掉句号的行为）
-
-##### 引入其他词库
-
-在 `rime_ice.dict.yaml` 中添加，`- cn_dicts/xxx` 即表示援引 `cn_dicts/` 目录下的 `xxx.dict.yaml` 文件。
-
-##### 自定义短语
-
-在 `custom_phrase.txt` 中添加，建议清空，换成你自己的习惯。
-
-双拼需要额外手动创建 `custom_phrase_double.txt`。
-
-##### 标点符号映射
-
-在 `symbols_custom.yaml` 中修改，单个映射即直接上屏，多个映射可以进行复选。
-
-##### 模糊音
-
-在 `rime_ice.schema.yaml` 中 `algebra` 下面解开相关注释，可单向或成对选择。
-
-##### 日期时间等关键字
-
-在方案中修改 `date_translator` 下 `date`、`time` 等对应的关键字。
-
-<br>
-
-## 感谢
-
-上述用到的词库，及 [@Huandeep](https://github.com/Huandeep) 整理的多个词库。
-
-上述提到的方案及功能参考。
+感谢所有贡献者。
 
 搜狗转 Rime：[lewangdev/scel2txt](https://github.com/lewangdev/scel2txt)
 
-大量参考[校对网](http://www.jiaodui.com/bbs/)。
+大量参考：
+
+- [校对标准论坛](http://www.jiaodui.com/bbs/)
+- [汉典](https://www.zdic.net/)
+- [成语典](https://dict.idioms.moe.edu.tw/)
 
 Thanks to JetBrains for the OSS development license.
 
@@ -148,7 +187,7 @@ Thanks to JetBrains for the OSS development license.
 
 <br>
 
-## ❤️ 赞助 ☕
+## 赞助 ☕
 
 如果觉得项目不错，可以请 Dvel 吃个煎饼馃子。
 
